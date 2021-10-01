@@ -103,11 +103,11 @@ make -j$(($(nproc) + 1)) V=s
 - luci-app-control-weburl---------------管控过滤[集成上网时间控制，黑白名单IP过滤，网址过滤几大功能]
 - luci-app-netdata----------------------网络监控中文版
 - luci-app-netspeedtest-----------------网络速度测试
-- luci-app-wolplus----------------------网络唤醒+
+- luci-app-wolplus----------------------网络唤醒+（需要配合control-weburl一起用）
 - luci-app-wrtbwmon---------------------带宽监控
 - luci-theme-opentopd-------------------opentopd（适配18.06）
 - 关机功能插件 : https://github.com/sirpdboy/luci-app-poweroffdevice
-- 说明：netdata和wrtbwmon需要手动替换掉lean/package/lean内同文件（删除无效）
+- 说明：netdata和wrtbwmon需要手动替换掉lean/package/lean内同文件（删除无效），不然会安装成Lean原版的插件
 
 #### 开启IPV6
 - 选上extra packages——ipv6helper
