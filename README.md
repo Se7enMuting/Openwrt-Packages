@@ -117,13 +117,20 @@ make -j$(($(nproc) + 1)) V=s
 - 取消extra packages——autosamba
 - 在 LuCI-Applications里，取消 luci-app-samba
 
-#### PVE安装指令
-- qm importdisk 121 /var/lib/vz/template/iso/openwrt-x86-64-generic-squashfs-combined-efi.img local-lvm
-
 #### 20211001版 自选LuCI-App总数：23
+
+#### 编译前更改LAN口的默认IP地址
+ ```bash
+cd lede
+vim package/base-files/files/bin/config_generate
+```
+#### PVE安装指令
+ ```bash
+qm importdisk 121 /var/lib/vz/template/iso/openwrt-x86-64-generic-squashfs-combined-efi.img local-lvm
+```
 
 #### Lan IP地址修改
 - vi /etc/config/network
-- i（修改插入）
-- 修改完按ESC退出编辑模式
+- i（插入修改）
+- 修改完，按ESC退出编辑模式
 - :wq（保存退出）
