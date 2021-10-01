@@ -117,6 +117,10 @@ make -j$(($(nproc) + 1)) V=s
 - 取消extra packages——autosamba
 - 在 LuCI-Applications里，取消 luci-app-samba
 
+#### 编译丰富插件时，建议修改下面两项默认大小，留足插件空间。
+- Target Images ---> (16) Kernel partition size (in MB)            #默认是 (16) 建议修改 (128)
+- Target Images ---> (160) Root filesystem partition size (in MB)  #默认是 (160) 建议修改 (512+)
+
 #### 20211001版 自选LuCI-App总数：23
 
 #### 编译前更改LAN口的默认IP地址
