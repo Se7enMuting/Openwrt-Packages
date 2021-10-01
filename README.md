@@ -133,6 +133,14 @@ vim package/base-files/files/bin/config_generate
 qm importdisk 121 /var/lib/vz/template/iso/openwrt-x86-64-generic-squashfs-combined-efi.img local-lvm
 ```
 
+#### OpenWrt /LEDE 中安装QEMU Guest Agent
+ssh进openwrt，安装qemu-ga 即可
+```bash
+opkg update
+opkg install qemu-ga
+reboot
+```
+
 #### Lan IP地址修改
 - vi /etc/config/network
 - i（插入修改）
