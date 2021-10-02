@@ -11,7 +11,7 @@
 
 
 首次编译命令如下:
--
+--
 1. 首先装好 Ubuntu 64bit，推荐 Ubuntu 20.04 LTS x64 （虚拟机推荐硬盘大小50G）
 
 2. 命令行输入 `sudo apt-get update` ，然后输入
@@ -36,6 +36,7 @@
 --
 
 二次编译（更新Lean源码+更新package）：
+
 ```bash
 cd lede
 git pull
