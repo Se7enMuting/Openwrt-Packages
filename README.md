@@ -2,9 +2,9 @@
 #### Lean的Openwrt源码仓库 自编译说明
 
 如何编译自己需要的 OpenWrt 固件
--
+--
 注意：
--
+--
 1. **不**要用 **root** 用户进行编译！！！
 2. 国内用户编译前最好准备好梯子
 3. 默认登陆IP 192.168.1.1 密码 password
@@ -66,30 +66,25 @@ make -j$(($(nproc) + 1)) V=s
 编译完成后输出路径：bin/targets
 
 #### 本package搬运自如下：
-
-* https://github.com/kenzok8/openwrt-packages
-
-
-* https://github.com/kenzok8/small
-
-
-* https://github.com/sirpdboy/sirpdboy-package
-
+```
+https://github.com/kenzok8/openwrt-packages
+https://github.com/kenzok8/small
+https://github.com/sirpdboy/sirpdboy-package
+```
 #### 使用方法：
 
- 1、 添加下面代码到 openwrt 或lede源码根目录feeds.conf.default文件
-
+ 1. 添加下面代码到 openwrt 或lede源码根目录feeds.conf.default文件
 ```bash
  src-git Se7en https://github.com/Se7enMuting/openwrt-packages
 ```
 
- 2、 添加passwall依赖
-
+ 2. 添加passwall依赖
  ```bash
  src-git small https://github.com/kenzok8/small
  ```
 
-- openwrt 固件编译自定义主题与软件
+3. openwrt 固件编译自定义主题与软件
+
 - 来自kenzok8：
 - luci-app-openclash       ------------------openclash图形
 - luci-app-passwall        ------------------Lienol大神          
@@ -109,7 +104,7 @@ make -j$(($(nproc) + 1)) V=s
 - luci-theme-opentopd-------------------opentopd（适配18.06）
 - 关机功能插件 : https://github.com/sirpdboy/luci-app-poweroffdevice
 - 说明：netdata和wrtbwmon需要手动替换掉lean/package/lean内同文件（删除无效），不然会安装成Lean原版的插件（`./scripts/feeds install -a -f`可强制安装feeds里的插件）
-- 自己修改
+- 自己修改:
 - luci-app-tencentddns------------------腾讯DDNS ([官方版本小修改界面](https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns))
 
 #### 开启IPV6
