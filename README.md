@@ -66,7 +66,8 @@ make -j$(($(nproc) + 1)) V=s
 
 编译完成后输出路径：bin/targets
 
-#### 本package搬运自如下：
+本package搬运自如下：
+--
 ```
 https://github.com/kenzok8/openwrt-packages
 https://github.com/kenzok8/small
