@@ -92,12 +92,13 @@ make -j$(($(nproc) + 1)) V=s
 - openwrt 固件编译自定义主题与软件
 - 来自kenzok8：
 - luci-app-openclash       ------------------openclash图形
-- luci-app-passwall        ------------------Lienol大神
-- luci-app-koolddns---------------------KOOL域名DNS解析工具          
+- luci-app-passwall        ------------------Lienol大神          
 - luci-theme-atmaterial_new  ------------------atmaterial 三合一主题（适配18.06）     
 - luci-theme-argon_new     ------------------二合蓝 紫主题
 - 来自sirpdboy：
 - luci-app-advanced---------------------系统高级设置【自带文件管理功能】
+- luci-app-koolddns---------------------KOOL域名DNS解析工具
+- luci-app-aliddns----------------------腾讯DDNS
 - luci-app-control-speedlimit-----------网速限制
 - luci-app-control-timewol--------------定时唤醒
 - luci-app-control-weburl---------------管控过滤[集成上网时间控制，黑白名单IP过滤，网址过滤几大功能]
@@ -107,7 +108,9 @@ make -j$(($(nproc) + 1)) V=s
 - luci-app-wrtbwmon---------------------带宽监控
 - luci-theme-opentopd-------------------opentopd（适配18.06）
 - 关机功能插件 : https://github.com/sirpdboy/luci-app-poweroffdevice
-- 说明：netdata和wrtbwmon需要手动替换掉lean/package/lean内同文件（删除无效），不然会安装成Lean原版的插件
+- 说明：netdata和wrtbwmon需要手动替换掉lean/package/lean内同文件（删除无效），不然会安装成Lean原版的插件（`./scripts/feeds install -a -f`可强制安装feeds里的插件）
+- 自己修改
+- luci-app-tencentddns------------------腾讯DDNS ([官方版本小修改界面](https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns))
 
 #### 开启IPV6
 - 选上extra packages——ipv6helper
@@ -118,10 +121,10 @@ make -j$(($(nproc) + 1)) V=s
 - 在 LuCI-Applications里，取消 luci-app-samba
 
 #### 编译丰富插件时，建议修改下面两项默认大小，留足插件空间。
-- Target Images ---> (16) Kernel partition size (in MB)            #默认是 (16) 建议修改 (128)
+- Target Images ---> (16) Kernel partition size (in MB)            #默认是 (16) 建议修改 (16-128)
 - Target Images ---> (160) Root filesystem partition size (in MB)  #默认是 (160) 建议修改 (512+)
 
-#### 20211001版 自选LuCI-App总数：23
+#### 20211001版 自选LuCI-App总数：23+1
 
 #### 编译前更改LAN口的默认IP地址
  ```bash
@@ -146,3 +149,28 @@ reboot
 - i（插入修改）
 - 修改完，按ESC退出编辑模式
 - :wq（保存退出）
+
+#### 单独编译 OpenWRT ipk 插件
+###### 保存插件源码
+- 下载源码`git clone`到~`/lede/package`
+- 或者已经在feeds里面了，无需在手动下载，`./scripts/feeds update -a && ./scripts/feeds install -a`即可
+###### 配置
+- `make menuconfig`
+- 然后进入对应的子菜单中找到对应插件按`M`表示选中插件，但不编译进固件
+###### 编译
+- `make package/xxxxx/compile V=99`
+- xxxxx 就是你需要单独编译的程序名称
+- 注意这里是固定格式，不用填写插件所在的路径，直接名字即可，只要上面配置时选中了
+###### ipk 生成路径
+- `~/lede/bin/packages/x86_64/xxxx`
+###### 其他
+- 若无法编译出插件，手动删除`bin`,`feeds`,`package/feeds`这些文件夹，再`./scripts/feeds update -a && ./scripts/feeds install -a`下
+
+#### openwrt源修改，注意要和linux core的版本对应
+src/gz openwrt_core https://mirrors.cloud.tencent.com/lede/releases/21.02.0/targets/x86/64/packages
+src/gz openwrt_base https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/base
+src/gz openwrt_luci https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/luci
+src/gz openwrt_packages https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/packages
+src/gz openwrt_routing https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/routing
+src/gz openwrt_telephony https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/telephony
+如果是第三方编译固件，会签名错误，把这段用#注释掉`# option check_signature`
