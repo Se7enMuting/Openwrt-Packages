@@ -303,6 +303,27 @@ e.remove("/tmp/openclash")
 end
 end
 end
+if nixio.fs.access("/etc/config/passwall")then
+s:tab("passwallconf",translate("passwall"),translate("本页是配置/etc/config/passwall的文档内容。应用保存后自动重启生效"))
+conf=s:taboption("passwallconf",Value,"passwallconf",nil,translate("开头的数字符号（＃）或分号的每一行（;）被视为注释；删除（;）启用指定选项。"))
+conf.template="cbi/tvalue"
+conf.rows=20
+conf.wrap="off"
+conf.cfgvalue=function(t,t)
+return e.readfile("/etc/config/passwall")or""
+end
+conf.write=function(a,a,t)
+if t then
+t=t:gsub("\r\n?","\n")
+e.writefile("/tmp/passwall",t)
+if(luci.sys.call("cmp -s /tmp/passwall /etc/config/passwall")==1)then
+e.writefile("/etc/config/passwall",t)
+luci.sys.call("/etc/init.d/passwall restart >/dev/null")
+end
+e.remove("/tmp/passwall")
+end
+end
+end
 
 
 return m
