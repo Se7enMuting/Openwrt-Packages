@@ -1,132 +1,39 @@
 
+#### Lean的Openwrt源码仓库 自编译说明
 
-# 2021-10-06 Lean版本Openwrt（[R21.10.1](https://github.com/coolsnowwolf/lede/tree/687407acdc585355acd24726eac61dca60cd06fb)）源码仓库+passwalll+openclash，自编译onebyone说明
-
-### 注意：
+如何编译自己需要的 OpenWrt 固件
+--
+注意：
+--
 1. **不**要用 **root** 用户进行编译！！！
 2. 国内用户编译前最好准备好梯子
-3. 默认登陆IP 192.168.1.* （后面会修改），密码 password
+3. 默认登陆IP 192.168.1.1 密码 password
 
 
-### 首次编译命令如下:
-1. 首先用VMware Workstation Pro 16 装好 Ubuntu 20.04 LTS x64 （虚拟机推荐硬盘大小50G-100G）
+首次编译命令如下:
+--
+1. 首先装好 Ubuntu 64bit，推荐 Ubuntu 20.04 LTS x64 （虚拟机推荐硬盘大小50G）
 
 2. 命令行输入 `sudo apt-get update` ，然后输入
    `
    sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync
    `
 
-3. 使用 `git clone https://github.com/coolsnowwolf/lede.git` 命令下载好源代码，然后 `cd lede` 进入目录
+3. 使用 `git clone https://github.com/coolsnowwolf/lede` 命令下载好源代码，然后 `cd lede` 进入目录
 
-4. `git reset --hard 687407acdc585355acd24726eac61dca60cd06fb`  返回R21.10.1版本
-
-5. 更改LAN口的默认IP地址
-```
-   cd lede
-   vim package/base-files/files/bin/config_generate
-   vi /etc/config/network
-   i     //插入模式。找到192.168.1.1,修改。按ESC退出编辑模式。
-   :wq   //保存退出
-```
-
-6. 添加下面代码到lede源码根目录feeds.conf.default文件（添加passwall和自定义的feeds源）
-
-   ```
-   src-git lienol https://github.com/xiaorouji/openwrt-passwall
-   src-git Se7en https://github.com/Se7enMuting/openwrt-package
+4. ```bash
+   ./scripts/feeds update -a
+   ./scripts/feeds install -a
+   make menuconfig
    ```
 
-7. 添加openclash源
+5. `make -j8 download V=s` 下载dl库（国内请尽量全局科学上网）
 
-   ```
-   # cd进入Clone项目
-   mkdir package/luci-app-openclash
-   cd package/luci-app-openclash
-   git init
-   git remote add -f origin https://github.com/vernesong/OpenClash.git
-   git config core.sparsecheckout true
-   echo "luci-app-openclash" >> .git/info/sparse-checkout
-   git pull --depth 1 origin master
-   git branch --set-upstream-to=origin/master master
-   
-   # 编译 po2lmo (如果有po2lmo可跳过)
-   pushd luci-app-openclash/tools/po2lmo
-   make && sudo make install
-   popd
-   
-   # 回退到主项目目录
-   cd ../..
-   ```
+6. 输入 `make -j1 V=s` （-j1 后面是线程数。第一次编译推荐用单线程）即可开始编译你要的固件了。
 
-8. 添加host/upx依赖，passwall要用
+本套代码保证肯定可以编译成功。里面包括了 R21 所有源代码，包括 IPK 的。
 
-   ```
-   git clone https://github.com/kuoruan/openwrt-upx.git package/openwrt-upx
-   ```
-
-9. update feeds
-
-```
-./scripts/feeds update -a
-```
-
-10. 强制安装（-f）feeds，若feeds和lean源有同名的package，强制安装feed里的
-
-```
-./scripts/feeds install -a -f
-```
-
-11. 添加poweroff按钮
-
-    这步必须要在`feeds install`之后，正式编译之前
-
-    ```
-    cd lean #进入源码目录
-    curl -fsSL  https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/poweroff.htm > ./feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_system/poweroff.htm 
-    curl -fsSL  https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/system.lua > ./feeds/luci/modules/luci-mod-admin-full/luasrc/controller/admin/system.lua
-    ```
-
-    
-
-12. 进入交互式配置界面
-
-```
-make menuconfig
-```
-
-##### 开启IPV6
-
-- 选上extra packages——ipv6helper
-- 在 Network – Firewall – ip6tables 下启用 ip6tables-extra 和 ip6tables-mod-nat 项。
-
-##### 取消samba
-
-- 取消extra packages——autosamba
-- 在 LuCI-Applications里，取消 luci-app-samba
-
-##### 编译丰富插件时，建议修改下面两项默认大小，留足插件空间。
-
-- Target Images ---> (16) Kernel partition size (in MB)                    #默认是 (16) 建议修改 (64)
-- Target Images ---> (160) Root filesystem partition size (in MB)  #默认是 (160) 建议修改 (512+)
-
-##### Base system > dnsmasq-full 填满-1
-
-##### 选主题
-
-##### luci 选23-2个，首次编译，openclash和passwall先不选
-
-##### 最后再确认`kmod-tun`被选上了
-
-```
-Kernel modules > Network Support > kmod-tun
-```
-
-13. `make -j8 download V=s` 下载dl库（国内请尽量全局科学上网）
-
-14. 输入 `make -j1 V=s` （-j1 后面是线程数。第一次编译推荐用单线程）即可开始编译你要的固件了。
-15. 编译完成后输出路径：bin/targets
-
-------
+--
 
 二次编译（更新Lean源码+更新package）：
 
@@ -157,17 +64,28 @@ make menuconfig
 make -j$(($(nproc) + 1)) V=s
 ```
 
+编译完成后输出路径：bin/targets
+
 本package搬运自如下：
 --
 ```
 https://github.com/kenzok8/openwrt-packages
 https://github.com/kenzok8/small
 https://github.com/sirpdboy/sirpdboy-package
-https://github.com/xiaorouji/openwrt-passwall
-https://github.com/vernesong/OpenClash
-https://github.com/Se7enMuting/openwrt-packages
 ```
-openwrt 固件编译自定义主题与软件
+#### 使用方法：
+
+ 1. 添加下面代码到 openwrt 或lede源码根目录feeds.conf.default文件
+```bash
+ src-git Se7en https://github.com/Se7enMuting/openwrt-packages
+```
+
+ 2. 添加passwall依赖
+ ```bash
+ src-git small https://github.com/kenzok8/small
+ ```
+
+3. openwrt 固件编译自定义主题与软件
 
 - 来自kenzok8：
 - luci-app-openclash       ------------------openclash图形
@@ -176,6 +94,7 @@ openwrt 固件编译自定义主题与软件
 - luci-theme-argon_new     ------------------二合蓝 紫主题
 - 来自sirpdboy：
 - luci-app-advanced---------------------系统高级设置【自带文件管理功能】
+- luci-app-koolddns---------------------KOOL域名DNS解析工具
 - luci-app-aliddns----------------------腾讯DDNS
 - luci-app-control-speedlimit-----------网速限制
 - luci-app-control-timewol--------------定时唤醒
@@ -186,13 +105,33 @@ openwrt 固件编译自定义主题与软件
 - luci-app-wrtbwmon---------------------带宽监控
 - luci-theme-opentopd-------------------opentopd（适配18.06）
 - 关机功能插件 : https://github.com/sirpdboy/luci-app-poweroffdevice
+- 说明：netdata和wrtbwmon需要手动替换掉lean/package/lean内同文件（删除无效），不然会安装成Lean原版的插件（`./scripts/feeds install -a -f`可强制安装feeds里的插件）
 - 自己修改:
 - luci-app-tencentddns------------------腾讯DDNS ([官方版本小修改界面](https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns))
 
+#### 开启IPV6
+- 选上extra packages——ipv6helper
+- 在 Network – Firewall – ip6tables 下启用 ip6tables-extra 和 ip6tables-mod-nat 项。
+
+#### 取消samba
+- 取消extra packages——autosamba
+- 在 LuCI-Applications里，取消 luci-app-samba
+
+#### 编译丰富插件时，建议修改下面两项默认大小，留足插件空间。
+- Target Images ---> (16) Kernel partition size (in MB)            #默认是 (16) 建议修改 (16-128)
+- Target Images ---> (160) Root filesystem partition size (in MB)  #默认是 (160) 建议修改 (512+)
+
+#### 20211001版 自选LuCI-App总数：23+1
+
+#### 编译前更改LAN口的默认IP地址
+ ```bash
+cd lede
+vim package/base-files/files/bin/config_generate
+```
 #### PVE安装指令
  ```bash
 qm importdisk 121 /var/lib/vz/template/iso/openwrt-x86-64-generic-squashfs-combined-efi.img local-lvm
- ```
+```
 
 #### OpenWrt /LEDE 中安装QEMU Guest Agent
 ssh进openwrt，安装qemu-ga 即可
@@ -201,6 +140,12 @@ opkg update
 opkg install qemu-ga
 reboot
 ```
+
+#### Lan IP地址修改
+- vi /etc/config/network
+- i（插入修改）
+- 修改完，按ESC退出编辑模式
+- :wq（保存退出）
 
 #### 单独编译 OpenWRT ipk 插件
 ###### 保存插件源码
