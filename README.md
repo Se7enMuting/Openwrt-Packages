@@ -22,7 +22,7 @@
 
 5. 更改LAN口的默认IP地址
 
-    ```
+   ```
    cd lede
    vim package/base-files/files/bin/config_generate
    vi /etc/config/network
