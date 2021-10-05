@@ -49,12 +49,12 @@
    echo "luci-app-openclash" >> .git/info/sparse-checkout
    git pull --depth 1 origin master
    git branch --set-upstream-to=origin/master master
-   
+
    # 编译 po2lmo (如果有po2lmo可跳过)
    pushd luci-app-openclash/tools/po2lmo
    make && sudo make install
    popd
-   
+
    # 回退到主项目目录
    cd ../..
    ```
@@ -70,7 +70,7 @@
    ```
    ./scripts/feeds update -a
    ```
-   
+
 10. 强制安装（-f）feeds，若feeds和lean源有同名的package，强制安装feed里的
 
    ```
@@ -83,7 +83,7 @@
 
     ```
     cd lean #进入源码目录
-    curl -fsSL https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/poweroff.htm > ./feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_system/poweroff.htm 
+    curl -fsSL https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/poweroff.htm > ./feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_system/poweroff.htm
     curl -fsSL https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/system.lua > ./feeds/luci/modules/luci-mod-admin-full/luasrc/controller/admin/system.lua
     ```
 
@@ -116,9 +116,7 @@
 
 ##### 最后再确认`kmod-tun`被选上了
 
-   ```
-   Kernel modules > Network Support > kmod-tun
-   ```
+   `Kernel modules > Network Support > kmod-tun`
 
 13. `make -j8 download V=s` 下载dl库（国内请尽量全局科学上网）
 
