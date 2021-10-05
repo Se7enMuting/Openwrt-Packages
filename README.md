@@ -21,13 +21,14 @@
 4. `git reset --hard 687407acdc585355acd24726eac61dca60cd06fb`  返回R21.10.1版本
 
 5. 更改LAN口的默认IP地址
-```
+
+    ```
    cd lede
    vim package/base-files/files/bin/config_generate
    vi /etc/config/network
    i     //插入模式。找到192.168.1.1,修改。按ESC退出编辑模式。
    :wq   //保存退出
-```
+   ```
 
 6. 添加下面代码到lede源码根目录feeds.conf.default文件（添加passwall和自定义的feeds源）
 
@@ -66,15 +67,15 @@
 
 9. update feeds
 
-```
-./scripts/feeds update -a
-```
-
+   ```
+   ./scripts/feeds update -a
+   ```
+   
 10. 强制安装（-f）feeds，若feeds和lean源有同名的package，强制安装feed里的
 
-```
-./scripts/feeds install -a -f
-```
+   ```
+   ./scripts/feeds install -a -f
+   ```
 
 11. 添加poweroff按钮
 
@@ -82,32 +83,30 @@
 
     ```
     cd lean #进入源码目录
-    curl -fsSL  https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/poweroff.htm > ./feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_system/poweroff.htm 
-    curl -fsSL  https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/system.lua > ./feeds/luci/modules/luci-mod-admin-full/luasrc/controller/admin/system.lua
+    curl -fsSL https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/poweroff.htm > ./feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_system/poweroff.htm 
+    curl -fsSL https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/system.lua > ./feeds/luci/modules/luci-mod-admin-full/luasrc/controller/admin/system.lua
     ```
-
-    
 
 12. 进入交互式配置界面
 
-```
-make menuconfig
-```
+   ```
+   make menuconfig
+   ```
 
 ##### 开启IPV6
 
-- 选上extra packages——ipv6helper
-- 在 Network – Firewall – ip6tables 下启用 ip6tables-extra 和 ip6tables-mod-nat 项。
+   - 选上extra packages——ipv6helper
+   - 在 Network – Firewall – ip6tables 下启用 ip6tables-extra 和 ip6tables-mod-nat 项。
 
 ##### 取消samba
 
-- 取消extra packages——autosamba
-- 在 LuCI-Applications里，取消 luci-app-samba
+   - 取消extra packages——autosamba
+   - 在 LuCI-Applications里，取消 luci-app-samba
 
 ##### 编译丰富插件时，建议修改下面两项默认大小，留足插件空间。
 
-- Target Images ---> (16) Kernel partition size (in MB)                    #默认是 (16) 建议修改 (64)
-- Target Images ---> (160) Root filesystem partition size (in MB)  #默认是 (160) 建议修改 (512+)
+   - Target Images ---> (16) Kernel partition size (in MB)                    #默认是 (16) 建议修改 (64)
+   - Target Images ---> (160) Root filesystem partition size (in MB)  #默认是 (160) 建议修改 (512+)
 
 ##### Base system > dnsmasq-full 填满-1
 
@@ -117,9 +116,9 @@ make menuconfig
 
 ##### 最后再确认`kmod-tun`被选上了
 
-```
-Kernel modules > Network Support > kmod-tun
-```
+   ```
+   Kernel modules > Network Support > kmod-tun
+   ```
 
 13. `make -j8 download V=s` 下载dl库（国内请尽量全局科学上网）
 
