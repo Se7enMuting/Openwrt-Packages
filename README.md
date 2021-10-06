@@ -75,6 +75,7 @@
 
    ```
    ./scripts/feeds install -a -f
+
    ```
 
 11. 添加poweroff按钮
@@ -91,6 +92,7 @@
 
    ```
    make menuconfig
+
    ```
 
 - 开启IPV6
