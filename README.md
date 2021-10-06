@@ -5,10 +5,10 @@
 ### 注意：
 1. **不**要用 **root** 用户进行编译！！！
 2. 国内用户编译前最好准备好梯子
-3. 默认登陆IP 192.168.1.* （后面会修改），密码 password
+3. 默认登陆IP 192.168.1.* （后面有修改），密码 password
 
 
-### 首次编译命令如下:
+### 首次编译:
 1. 首先用VMware Workstation Pro 16 装好 Ubuntu 20.04 LTS x64 （虚拟机推荐硬盘大小50G-100G）
 
 2. 命令行输入 `sudo apt-get update` ，然后输入
@@ -18,7 +18,7 @@
 
 3. 使用 `git clone https://github.com/coolsnowwolf/lede.git` 命令下载好源代码，然后 `cd lede` 进入目录
 
-4. `git reset --hard 687407acdc585355acd24726eac61dca60cd06fb`  返回R21.10.1版本
+4. `git reset --hard 687407acdc585355acd24726eac61dca60cd06fb`  退回R21.10.1版本
 
 5. 更改LAN口的默认IP地址
 
@@ -26,11 +26,11 @@
    cd lede
    vim package/base-files/files/bin/config_generate
    vi /etc/config/network
-   i     //插入模式。找到192.168.1.1,修改。按ESC退出编辑模式。
-   :wq   //保存退出
+   i       #插入模式；找到192.168.1.1，修改；按ESC退出编辑模式
+   :wq     #保存退出
    ```
 
-6. 添加下面代码到lede源码根目录feeds.conf.default文件（添加passwall和自定义的feeds源）
+6. 添加下面代码到lede源码根目录`feeds.conf.default`文件（添加passwall和自定义的feeds源）
 
    ```
    src-git lienol https://github.com/xiaorouji/openwrt-passwall
@@ -71,7 +71,7 @@
    ./scripts/feeds update -a
    ```
 
-10. 强制安装（-f）feeds，若feeds和lean源有同名的package，强制安装feed里的
+10. 强制安装（-f）feeds，如feeds和lean源有同名的package，强制安装feed里的
 
    ```
    ./scripts/feeds install -a -f
@@ -79,7 +79,7 @@
 
 11. 添加poweroff按钮
 
-    这步必须要在`feeds install`之后，正式编译之前
+    这步必须要在feeds install之后，编译之前
 
     ```
     cd lean #进入源码目录
@@ -93,35 +93,69 @@
    make menuconfig
    ```
 
-##### 开启IPV6
+- 开启IPV6
 
    - 选上extra packages——ipv6helper
    - 在 Network – Firewall – ip6tables 下启用 ip6tables-extra 和 ip6tables-mod-nat 项。
 
-##### 取消samba
+- 取消samba
 
    - 取消extra packages——autosamba
    - 在 LuCI-Applications里，取消 luci-app-samba
 
-##### 编译丰富插件时，建议修改下面两项默认大小，留足插件空间。
+- 编译丰富插件时，建议修改下面两项默认大小，留足插件空间。
 
-   - Target Images ---> (16) Kernel partition size (in MB)                    #默认是 (16) 建议修改 (64)
-   - Target Images ---> (160) Root filesystem partition size (in MB)  #默认是 (160) 建议修改 (512+)
+   - Target Images ---> (16) Kernel partition size (in MB)--------------#默认是 (16) 建议修改 (64)
+   - Target Images ---> (160) Root filesystem partition size (in MB) --#默认是 (160) 建议修改 (512+)
 
-##### Base system > dnsmasq-full 填满-1
 
-##### 选主题
+- Base system > dnsmasq-full 选满（HAVE不选）
 
-##### luci 选23-2个，首次编译，openclash和passwall先不选
+- 添加主题
 
-##### 最后再确认`kmod-tun`被选上了
+- luci 选23-2个；首次编译，openclash和passwall先不选
 
-   `Kernel modules > Network Support > kmod-tun`
+- 最后再确认kmod-tun被选上了（openclash依赖，一定要最后确认一次，会被自动取消掉）
+
+   Kernel modules > Network Support > kmod-tun
 
 13. `make -j8 download V=s` 下载dl库（国内请尽量全局科学上网）
 
-14. 输入 `make -j1 V=s` （-j1 后面是线程数。第一次编译推荐用单线程）即可开始编译你要的固件了。
+14. 输入 `make -j1 V=s` （-j1 后面是线程数；第一次编译推荐用单线程）即可开始编译你要的固件了
 15. 编译完成后输出路径：bin/targets
+
+### 第二次完整编译，带上openclash和passwall
+
+1. 清除配置
+
+   ```
+   rm -rf ./tmp && rm -rf .config
+   ```
+
+2. 重复**首次编译**中的第12步，luci里选23个（openclash和passwall）
+
+   ```
+   make menuconfig
+   ```
+3. 可多线程编译
+   ```
+   make -j$(($(nproc) + 1)) V=s
+   ```
+
+4. 编译完成后输出路径：bin/targets
+
+------
+### 更新编译
+
+```
+cd lede  #进入LEDE目录
+git pull  #同步更新大雕源码
+cd package/luci-app-openclash && git pull  #进入OpenClash目录并更新源码
+cd ../..  #退回到lede目录
+./scripts/feeds update -a && ./scripts/feeds install -a -f
+make menuconfig
+make -j$(($(nproc) + 1)) V=s
+```
 
 ------
 
@@ -168,8 +202,8 @@ openwrt 固件编译自定义主题与软件
 
 - 来自kenzok8：
 - luci-app-openclash       ------------------openclash图形
-- luci-app-passwall        ------------------Lienol大神          
-- luci-theme-atmaterial_new  ------------------atmaterial 三合一主题（适配18.06）     
+- luci-app-passwall        ------------------Lienol大神
+- luci-theme-atmaterial_new  ------------------atmaterial 三合一主题（适配18.06）
 - luci-theme-argon_new     ------------------二合蓝 紫主题
 - 来自sirpdboy：
 - luci-app-advanced---------------------系统高级设置【自带文件管理功能】
