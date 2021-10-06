@@ -22,8 +22,8 @@
 	cd lede
 	vim package/base-files/files/bin/config_generate
 	vi /etc/config/network
-	i       #插入模式；找到192.168.1.1，修改；按ESC退出编辑模式
-	:wq     #保存退出
+	i                                                 #插入模式；找到192.168.1.1，修改；按ESC退出编辑模式
+	:wq                                               #保存退出
 	```
 
 6. 添加下面代码到lede源码根目录`feeds.conf.default`文件（添加passwall和自定义的feeds源）
