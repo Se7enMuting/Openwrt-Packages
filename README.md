@@ -92,8 +92,10 @@
 
 - 编译丰富插件时，建议修改下面两项默认大小，留足插件空间。
 
-   - Target Images ---> (16) Kernel partition size (in MB)--------------#默认是 (16) 建议修改 (64)
-   - Target Images ---> (160) Root filesystem partition size (in MB) --#默认是 (160) 建议修改 (512+)
+   - Target Images ---> (16) Kernel partition size (in MB)
+   *（默认是 16，建议修改成 64）*
+   - Target Images ---> (160) Root filesystem partition size (in MB)
+   *（默认是 160，建议修改成 512+）*
 
 - Base system > dnsmasq-full 选满（HAVE不选）
 
