@@ -95,7 +95,7 @@
    - Target Images ---> (16) Kernel partition size (in MB)  
    *（默认是 16，建议修改成 64）*  
    - Target Images ---> (160) Root filesystem partition size (in MB)  
-   *（默认是 160，建议修改成 512+）*  
+   *（默认是 160，建议修改成 512+）*
 
 - Base system > dnsmasq-full 选满（HAVE不选）
 
