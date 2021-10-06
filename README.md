@@ -73,8 +73,9 @@
 
 10. 强制安装（-f）feeds，如feeds和lean源有同名的package，强制安装feed里的
 
-​        `./scripts/feeds install -a -f`
-
+	
+		./scripts/feeds install -a -f
+	
 11. 添加poweroff按钮
 
     这步必须要在feeds install之后，编译之前
@@ -87,7 +88,9 @@
 
 12. 进入交互式配置界面
 
-​       `make menuconfig`
+	
+		make menuconfig
+	
 
 - 开启IPV6
 
