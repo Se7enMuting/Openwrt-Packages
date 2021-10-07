@@ -29,7 +29,7 @@
 6. 添加下面代码到lede源码根目录`feeds.conf.default`文件（添加passwall和自定义的feeds源）
 	```
 	src-git lienol https://github.com/xiaorouji/openwrt-passwall
-	src-git Se7en https://github.com/Se7enMuting/openwrt-package
+	src-git Se7en https://github.com/Se7enMuting/openwrt-packages
 	```
 
 7. 添加openclash源
