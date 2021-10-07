@@ -1,5 +1,34 @@
 
-# 2021-10-06 Lean版本Openwrt（[R21.10.1](https://github.com/coolsnowwolf/lede/tree/687407acdc585355acd24726eac61dca60cd06fb)）源码仓库+passwalll+openclash，自编译onebyone说明
+## 本package包来自：
+```
+https://github.com/kenzok8/openwrt-packages
+https://github.com/sirpdboy/sirpdboy-package
+https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
+```
+
+## 本package包说明：
+1. 来自kenzok8：
+	- luci-theme-atmaterial_new  -----------主题
+	- luci-theme-argon_new     -------------主题
+2. 来自sirpdboy(koolshare风格)：
+	- luci-app-advanced---------------------系统高级设置【自带文件管理功能】（自改添加passwall支持）
+	- luci-app-aliddns----------------------阿里DDNS
+	- luci-app-control-speedlimit-----------网速限制
+	- luci-app-control-timewol--------------定时唤醒
+	- luci-app-control-weburl---------------管控过滤[集成上网时间控制，黑白名单IP过滤，网址过滤几大功能]
+	- luci-app-netdata----------------------网络监控中文版
+	- luci-app-netspeedtest-----------------网络速度测试
+	- luci-app-wolplus----------------------网络唤醒+（需要配合control-weburl一起用）
+	- luci-app-wrtbwmon---------------------带宽监控
+	- luci-theme-opentopd-------------------主题(koolshare风格，适配Lean)
+	- 关机功能插件，curl修改方法 : https://github.com/sirpdboy/luci-app-poweroffdevice
+3. 腾讯官方:
+	- luci-app-tencentddns------------------ 腾讯DDNS（修改UI，移入`服务`中）
+----
+# 附1：[自用云编译Action](https://github.com/Se7enMuting/Actions-OpenWrt)
+----
+# 附2：本地编译笔记，基本和上面云编译版一致
+## 2021-10-06 Lean版本Openwrt（[R21.10.1](https://github.com/coolsnowwolf/lede/tree/687407acdc585355acd24726eac61dca60cd06fb)）源码仓库+passwalll+openclash，自编译onebyone说明
 
 ### 注意：
 1. **不**要用 **root** 用户进行编译！！！
@@ -168,39 +197,11 @@ make menuconfig
 make -j$(($(nproc) + 1)) V=s
 ```
 
-#### 本package搬运自如下
-```
-https://github.com/kenzok8/openwrt-packages
-https://github.com/kenzok8/small
-https://github.com/sirpdboy/sirpdboy-package
-https://github.com/xiaorouji/openwrt-passwall
-https://github.com/vernesong/OpenClash
-https://github.com/Se7enMuting/openwrt-packages
-```
-
-#### openwrt 固件编译自定义主题与软件
-1. 来自kenzok8：
-	- luci-app-openclash       ------------------openclash图形
-	- luci-app-passwall        ------------------Lienol大神
-	- luci-theme-atmaterial_new  ------------------atmaterial 三合一主题（适配18.06）
-	- luci-theme-argon_new     ------------------二合蓝 紫主题
-2. 来自sirpdboy：
-	- luci-app-advanced---------------------系统高级设置【自带文件管理功能】
-	- luci-app-aliddns----------------------腾讯DDNS
-	- luci-app-control-speedlimit-----------网速限制
-	- luci-app-control-timewol--------------定时唤醒
-	- luci-app-control-weburl---------------管控过滤[集成上网时间控制，黑白名单IP过滤，网址过滤几大功能]
-	- luci-app-netdata----------------------网络监控中文版
-	- luci-app-netspeedtest-----------------网络速度测试
-	- luci-app-wolplus----------------------网络唤醒+（需要配合control-weburl一起用）
-	- luci-app-wrtbwmon---------------------带宽监控
-	- luci-theme-opentopd-------------------opentopd（适配18.06）
-	- 关机功能插件 : https://github.com/sirpdboy/luci-app-poweroffdevice
-3. 自己修改:
-	- luci-app-tencentddns------------------腾讯DDNS ([官方版本小修改界面](https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns))
-
 #### PVE安装指令
-	qm importdisk 121 /var/lib/vz/template/iso/openwrt-x86-64-generic-squashfs-combined-efi.img local-lvm
+   1. local(***)-->ISO镜像-->上传
+   ```
+   qm importdisk 100 /var/lib/vz/template/iso/openwrt-x86-64-generic-squashfs-combined-efi.img local-lvm
+   ```
 
 #### OpenWrt /LEDE 中安装QEMU Guest Agent
 
@@ -210,6 +211,7 @@ https://github.com/Se7enMuting/openwrt-packages
 	opkg install qemu-ga
 	reboot
 	```
+
 #### 单独编译 OpenWRT ipk 插件
 
 1. 保存插件源码
@@ -243,4 +245,4 @@ https://github.com/Se7enMuting/openwrt-packages
 	src/gz openwrt_routing https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/routing
 	src/gz openwrt_telephony https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/telephony
 
-如果是第三方编译固件，会签名错误，把这段用#注释掉`# option check_signature`
+第三方编译固件，和官方签名不一致，无法opkg update成功，可把这行用#注释掉`# option check_signature`
