@@ -241,6 +241,10 @@ https://github.com/Se7enMuting/openwrt-packages
 5. 其他
 	- 若无法编译出插件，手动删除`bin`,`feeds`,`package/feeds`这些文件夹，再`./scripts/feeds update -a && ./scripts/feeds install -a`下
 
+#### menuconfig之后，从配置文件diffconfig导出差异文件seed.config，给云编译备用
+
+	./scripts/diffconfig.sh > seed.config
+
 #### openwrt源修改，注意要和linux core的版本对应
 	src/gz openwrt_core https://mirrors.cloud.tencent.com/lede/releases/21.02.0/targets/x86/64/packages
 	src/gz openwrt_base https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/base
