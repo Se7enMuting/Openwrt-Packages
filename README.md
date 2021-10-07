@@ -27,7 +27,7 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 ----
 # 附1：[自用云编译Action](https://github.com/Se7enMuting/Actions-OpenWrt)
 # 附2：本地编译笔记，基本和上面云编译版一致
-## 2021-10-06 Lean版本Openwrt（[R21.10.1](https://github.com/coolsnowwolf/lede/tree/687407acdc585355acd24726eac61dca60cd06fb)）源码仓库+passwalll+openclash，自编译onebyone说明
+## 2021-10-06 Lean版本Openwrt（[R21.10.1](https://github.com/coolsnowwolf/lede/tree/687407acdc585355acd24726eac61dca60cd06fb)）源码仓库+passwalll+openclash，自编译step-by-step说明
 
 ### 注意：
 1. **不**要用 **root** 用户进行编译！！！
