@@ -124,10 +124,11 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
    	*（默认是 16，建议修改成 64）*
 	   - Target Images ---> (160) Root filesystem partition size (in MB)
    	*（默认是 160，建议修改成 512+）*
-	- Base system > dnsmasq-full 选满（HAVE不选）
+	- Base system > dnsmasq-full ---> 选满（HAVE不选）
+	- Luci > Modules > Luci-compat ---> OpenClash依赖
 	- 添加主题
 	- luci 选23-2个；首次编译，openclash和passwall先不选
-	- 最后再确认kmod-tun被选上了（openclash依赖，一定要最后确认一次，会被自动取消掉）
+	- 最后再确认kmod-tun被选上了（openclash依赖，一定要最后确认一次，会被自动取消掉）  
    	Kernel modules > Network Support > kmod-tun
 
 
