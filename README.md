@@ -128,7 +128,7 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 	- Luci > Modules > Luci-compat ---> OpenClash依赖
 	- 添加主题
 	- luci 选23-2个；首次编译，openclash和passwall先不选
-	- 最后再确认kmod-tun被选上了（openclash依赖，一定要最后确认一次，会被自动取消掉）
+	- 最后再确认kmod-tun被选上了（openclash依赖，一定要最后确认一次，会被自动取消掉）  
    	Kernel modules > Network Support > kmod-tun
 
 
