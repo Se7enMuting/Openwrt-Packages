@@ -245,7 +245,7 @@ make -j$(($(nproc) + 1)) V=s
 	# 2. 如果有.config文件，检测是否有缺少的配置，有缺少则按照默认的y/n添加上去;没有则使用当前.config文件，不会被改动成默认配置
 
 	make menuconfig
-	#通过菜单选择来生成.config文件
+	# 1. 通过菜单选择来生成.config文件
 
 - make前必须要有.config文件
 - 如果没有新增编译项目，可以直接使用上次的.config，用`make defconfig`确认是否是 `# No change to .config`
