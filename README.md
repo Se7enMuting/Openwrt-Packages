@@ -17,7 +17,7 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 	- luci-app-control-timewol--------------定时唤醒
 	- luci-app-control-weburl---------------管控过滤[集成上网时间控制，黑白名单IP过滤，网址过滤几大功能]
 	- luci-app-netdata----------------------网络监控中文版
-	- luci-app-netspeedtest-----------------网络速度测试
+	- luci-app-netspeedtest-----------------网络速度测试（需要network >+ iperf3）
 	- luci-app-wolplus----------------------网络唤醒+（需要配合control-weburl一起用）
 	- luci-app-wrtbwmon---------------------带宽监控
 	- luci-theme-opentopd-------------------主题(koolshare风格，适配Lean)
@@ -114,22 +114,24 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 		make menuconfig
 
 	- 开启IPV6
-	   - 选上extra packages——ipv6helper
-	   - 在 Network – Firewall – ip6tables 下启用 ip6tables-extra 和 ip6tables-mod-nat 项。
+	   - 选上 extra packages >+ ipv6helper
+	   - 在 Network > Firewall > ip6tables 下启用 ip6tables-extra 和 ip6tables-mod-nat 项。
 	- 取消samba
-	   - 取消extra packages——autosamba
-	   - 在 LuCI-Applications里，取消 luci-app-samba
-	- 编译丰富插件时，建议修改下面两项默认大小，留足插件空间。
-	   - Target Images ---> (16) Kernel partition size (in MB)
+	   - 取消 extra packages >- autosamba
+	   - 在 LuCI-Applications里，现在可以取消 luci-app-samba 了
+	- 编译丰富插件时，建议修改下面两项默认大小，留足插件空间
+	   - Target Images > (16) Kernel partition size (in MB)
    	*（默认是 16，建议修改成 64）*
-	   - Target Images ---> (160) Root filesystem partition size (in MB)
+	   - Target Images > (160) Root filesystem partition size (in MB)
    	*（默认是 160，建议修改成 512+）*
-	- Base system > dnsmasq-full ---> 选满（HAVE不选）
-	- Luci > Modules > Luci-compat ---> OpenClash依赖
+	- Base system >+ dnsmasq-full ---> 选满（HAVE不选）
+	- Luci > Modules >+ Luci-compat ---> OpenClash依赖
+	- Network→IP Addresses and Names >+ ddns-scripts_cloudflare.com-v4 + ddns-scripts_freedns_42_pl + ddns-scripts_godaddy.com-v1 ---> DDNS插件依赖
+	- network >+ iperf3 ---> luci-app-netspeedtest需要
 	- 添加主题
-	- luci 选23-2个；首次编译，openclash和passwall先不选
-	- 最后再确认kmod-tun被选上了（openclash依赖，一定要最后确认一次，会被自动取消掉）  
-   	Kernel modules > Network Support > kmod-tun
+	- luci 选22-2个；首次编译，openclash和passwall先不选
+	- 最后再确认kmod-tun被选上了（openclash依赖，一定要最后确认一次，因为会被自动取消掉）
+   	Kernel modules > Network Support >+ kmod-tun
 
 
 14. `make -j8 download V=s` 下载dl库（国内请尽量全局科学上网）
@@ -144,7 +146,7 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 	rm -rf ./tmp && rm -rf .config
 	```
 
-2. 重复**首次编译**中的第13步，luci里选23个（openclash和passwall）
+2. 重复**首次编译**中的第13步，luci里选22个（openclash和passwall）
 	```
 	make menuconfig
 	```
@@ -233,9 +235,27 @@ make -j$(($(nproc) + 1)) V=s
 5. 其他
 	- 若无法编译出插件，手动删除`bin`,`feeds`,`package/feeds`这些文件夹，再`./scripts/feeds update -a && ./scripts/feeds install -a`下
 
-#### menuconfig之后，从配置文件diffconfig导出差异文件seed.config，给云编译备用
+#### 用diffconfig脚本来比较默认.config和menuconfig之后的.config,导出差异文件seed.config，给云编译备用
 
 	./scripts/diffconfig.sh > seed.config
+
+#### .config文件笔记
+	make defconfig
+	# 1. 如果没有.config文件，生成默认配置的.config文件
+	# 2. 如果有.config文件，检测是否有缺少的配置，有则按照默认的y/n添加上去;没有则使用当前.config文件，不会被改动成默认配置
+
+	make menuconfig
+	#通过菜单选择来生成.config文件
+
+- make前必须要有.config文件
+- 如果没有新增编译项目，可以直接使用上次的.config，用`make defconfig`确认是否是 `# No change to .config`
+- 或使用diffconfig.sh导出的差异配置seed.config，改名成.config，然后用`make defconfig`生成完整版的.config，再make
+
+#### 默认luci-app-ddns插件里的dnspod和aliyun如何正确使用
+- 域名的正确填写方法
+	- 如果是example.com，则域名填：@example.com
+	- 如果是blog.example.com，则域名填：blog@example.com
+	- 如果是good.blog.example.com，则域名填：good.blog@example.com
 
 #### openwrt源修改，注意要和linux core的版本对应
 	src/gz openwrt_core https://mirrors.cloud.tencent.com/lede/releases/21.02.0/targets/x86/64/packages
