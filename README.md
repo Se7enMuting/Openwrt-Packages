@@ -242,7 +242,7 @@ make -j$(($(nproc) + 1)) V=s
 #### .config文件笔记
 	make defconfig
 	# 1. 如果没有.config文件，生成默认配置的.config文件
-	# 2. 如果有.config文件，检测是否有缺少的配置，有则按照默认的y/n添加上去;没有则使用当前.config文件，不会被改动成默认配置
+	# 2. 如果有.config文件，检测是否有缺少的配置，有缺少则按照默认的y/n添加上去;没有则使用当前.config文件，不会被改动成默认配置
 
 	make menuconfig
 	#通过菜单选择来生成.config文件
