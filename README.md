@@ -159,30 +159,20 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 
 4. 编译完成后输出路径：bin/targets
 
-#### 更新编译
+#### 以后更新编译（更新Lean源码+package+openclash）
 ```
 cd lede                                                       #进入LEDE目录
 git pull                                                      #同步更新大雕源码
 cd package/luci-app-openclash && git pull                     #进入OpenClash目录并更新源码
 cd ../..                                                      #退回到lede目录
 ./scripts/feeds update -a && ./scripts/feeds install -a -f
-make menuconfig
-make -j$(($(nproc) + 1)) V=s
-```
-
-## 2.更新编译方法：
-
-#### 二次编译（更新Lean源码+更新package）
-```
-cd lede
-git pull
-./scripts/feeds update -a && ./scripts/feeds install -a
 make defconfig
-make -j8 download
 make -j$(($(nproc) + 1)) V=s
 ```
 
-#### 如果需要重新配置
+## 2.重新配置config的编译方法：
+
+#### 重新配置config编译
 ```
 cd lede
 rm -rf ./tmp && rm -rf .config
@@ -190,11 +180,13 @@ make menuconfig
 make -j$(($(nproc) + 1)) V=s
 ```
 
-#### 如果更新Lean源码+更新package+需要重新配置
+#### 更新Lean源码+package+openclash & 重新配置config编译
 ```
 cd lede
 git pull
-./scripts/feeds update -a && ./scripts/feeds install -a
+cd package/luci-app-openclash && git pull
+cd ../..
+./scripts/feeds update -a && ./scripts/feeds install -a -f
 rm -rf ./tmp && rm -rf .config
 make menuconfig
 make -j$(($(nproc) + 1)) V=s
