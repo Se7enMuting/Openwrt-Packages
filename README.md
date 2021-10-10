@@ -25,8 +25,6 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 3. 腾讯官方:
 	- luci-app-tencentddns------------------ 腾讯DDNS（修改UI，移入`服务`中）
 
-- *OpenClash用原作者推荐的手动git clone方式添加编译，不在feeds文件内添加，具体方法见[附2]*
-
 ----
 # 附1：[自用云编译Action](https://github.com/Se7enMuting/Actions-OpenWrt)
 # 附2：本地编译笔记，基本和上面云编译版一致
