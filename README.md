@@ -253,9 +253,9 @@ make -j$(($(nproc) + 1)) V=s
 
 #### 默认luci-app-ddns插件里的dnspod和aliyun如何正确使用
 - 域名的正确填写方法
-	- 如果是example.com，则域名填：@example.com
-	- 如果是blog.example.com，则域名填：blog@example.com
-	- 如果是good.blog.example.com，则域名填：good.blog@example.com
+	- 如果是`example.com`，则域名填：`@example.com`
+	- 如果是`blog.example.com`，则域名填：`blog@example.com`
+	- 如果是`good.blog.example.com`，则域名填：`good.blog@example.com`
 
 #### openwrt源修改，注意要和linux core的版本对应
 	src/gz openwrt_core https://mirrors.cloud.tencent.com/lede/releases/21.02.0/targets/x86/64/packages
