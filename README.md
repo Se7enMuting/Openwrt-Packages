@@ -114,24 +114,24 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 		make menuconfig
 
 	- 开启IPV6
-	   - 选上 extra packages >+ ipv6helper
+	   - 选上 Extra packages >+ ipv6helper
 	   - 在 Network > Firewall > ip6tables 下启用 ip6tables-extra 和 ip6tables-mod-nat 项。
 	- 取消samba
-	   - 取消 extra packages >- autosamba
-	   - 在 LuCI-Applications里，现在可以取消 luci-app-samba 了
+	   - 取消 Extra packages >- autosamba
+	   - 在 LuCI > Applications里，现在可以取消luci-app-samba了
 	- 编译丰富插件时，建议修改下面两项默认大小，留足插件空间
 	   - Target Images > (16) Kernel partition size (in MB)
    	*（默认是 16，建议修改成 64）*
 	   - Target Images > (160) Root filesystem partition size (in MB)
    	*（默认是 160，建议修改成 512+）*
 	- Base system >+ dnsmasq-full ---> 选满（HAVE不选）
-	- Luci > Modules >+ Luci-compat ---> OpenClash依赖
-	- Network→IP Addresses and Names >+ ddns-scripts_cloudflare.com-v4 + ddns-scripts_freedns_42_pl + ddns-scripts_godaddy.com-v1 ---> DDNS插件依赖
-	- network >+ iperf3 ---> luci-app-netspeedtest需要
-	- 添加主题
-	- luci 选22-2个；首次编译，openclash和passwall先不选
+	- LuCI > Modules >+ Luci-compat ---> OpenClash依赖
+	- Network > IP Addresses and Names >+ ddns-scripts_cloudflare.com-v4 + ddns-scripts_freedns_42_pl + ddns-scripts_godaddy.com-v1 ---> DDNS插件依赖
+	- Network >+ iperf3 ---> luci-app-netspeedtest需要
+	- 添加主题 >+ opentopd
+	- LuCI > Applications 先选20个（22-2），因为首次编译，建议openclash和passwall先不选
 	- 最后再确认kmod-tun被选上了（openclash依赖，一定要最后确认一次，因为会被自动取消掉）
-   	Kernel modules > Network Support >+ kmod-tun
+   	- Kernel modules > Network Support >+ kmod-tun
 
 
 14. `make -j8 download V=s` 下载dl库（国内请尽量全局科学上网）
@@ -239,7 +239,7 @@ make -j$(($(nproc) + 1)) V=s
 
 	./scripts/diffconfig.sh > seed.config
 
-#### .config文件笔记
+#### .config文件笔记(在Ubuntu Desktop下是隐藏文件)
 	make defconfig
 	# 1. 如果没有.config文件，生成默认配置的.config文件
 	# 2. 如果有.config文件，检测是否有缺少的配置，有缺少则按照默认的y/n添加上去;没有则使用当前.config文件，不会被改动成默认配置
