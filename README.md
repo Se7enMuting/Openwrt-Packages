@@ -5,6 +5,7 @@ https://github.com/kenzok8/openwrt-packages
 https://github.com/sirpdboy/sirpdboy-package
 https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 ```
+*OpenClash用原作者推荐的手动git clone方式添加编译，不在feeds文件内添加，具体方法见[附2]*
 
 ## 本package包说明：
 1. 来自kenzok8：
