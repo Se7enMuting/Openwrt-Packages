@@ -27,7 +27,7 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 
 ----
 # 附1：[自用云编译Action](https://github.com/Se7enMuting/Actions-OpenWrt)
-# 附2：本地编译笔记，基本和上面云编译版一致
+# 附2：本地自编译笔记，基本和上面云编译版一致
 ## 2021-10-06 Lean版本Openwrt（[R21.10.1](https://github.com/coolsnowwolf/lede/tree/687407acdc585355acd24726eac61dca60cd06fb)）源码仓库+passwalll+openclash，自编译step-by-step说明
 
 ### 注意：
@@ -170,7 +170,7 @@ make menuconfig
 make -j$(($(nproc) + 1)) V=s
 ```
 
-## 2.其他说明：
+## 2.更新编译方法：
 
 #### 二次编译（更新Lean源码+更新package）
 ```
@@ -200,20 +200,53 @@ make menuconfig
 make -j$(($(nproc) + 1)) V=s
 ```
 
+# 附3：安装
+
 #### PVE安装指令
    1. local(***)-->ISO镜像-->上传
    ```
    qm importdisk 100 /var/lib/vz/template/iso/openwrt-x86-64-generic-squashfs-combined-efi.img local-lvm
    ```
+	 `100`为虚拟机ID，请自行修改
+
+#### openwrt源修改，注意要和版本对应
+登录web，系统 > 软件包 > 设置，修改：
+```
+src/gz openwrt_core https://mirrors.cloud.tencent.com/lede/releases/21.02.0/targets/x86/64/packages
+src/gz openwrt_base https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/base
+src/gz openwrt_luci https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/luci
+src/gz openwrt_packages https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/packages
+src/gz openwrt_routing https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/routing
+src/gz openwrt_telephony https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/telephony
+```
+因为是自编译固件，和官方签名不一致，无法opkg update成功，要把这行用#注释掉`# option check_signature`
 
 #### OpenWrt /LEDE 中安装QEMU Guest Agent
 
-1. ssh进openwrt，安装qemu-ga 即可
+1. ssh进openwrt，安装qemu-ga
 	```
 	opkg update
 	opkg install qemu-ga
 	reboot
 	```
+
+# 附4：其他
+
+#### 用`diffconfig.sh`脚本导出[默认的`.config`]和[menuconfig之后的`.config`]之间的差异文件`seed.config`，给云编译备用
+
+	./scripts/diffconfig.sh > seed.config
+
+#### `.config`文件笔记(在Ubuntu Desktop下是隐藏文件)
+	make defconfig
+	# 1. 如果没有.config文件，生成默认配置的.config文件
+	# 2. 如果有.config文件，检测是否有缺少的配置，有缺少则按照默认的y/n添加上去;没有则使用当前.config文件，不会被改动成默认配置
+
+	make menuconfig
+	# 1. 通过菜单选择来生成.config文件
+
+- make前必须要有`.config`文件
+- 如果没有新增编译项目，可以直接使用上次的`.config`，用`make defconfig`确认是否是 `# No change to .config`
+- 或使用`diffconfig.sh`导出的差异配置`seed.config`，改名成`.config`，然后用`make defconfig`生成完整版的`.config`，再make
 
 #### 单独编译 OpenWRT ipk 插件
 
@@ -228,7 +261,7 @@ make -j$(($(nproc) + 1)) V=s
 3. 编译
 	- `make package/xxxxx/compile V=99`
 	- xxxxx 就是你需要单独编译的程序名称
-	- 注意这里是固定格式，不用填写插件所在的路径，直接名字即可，只要上面配置时选中了
+	- 注意这里是固定格式，不用填写插件所在的路径，直接用名字即可，只要上面配置时用`M`选中了
 
 4. ipk 生成路径
 	- `~/lede/bin/packages/x86_64/xxxx`
@@ -236,34 +269,8 @@ make -j$(($(nproc) + 1)) V=s
 5. 其他
 	- 若无法编译出插件，手动删除`bin`,`feeds`,`package/feeds`这些文件夹，再`./scripts/feeds update -a && ./scripts/feeds install -a`下
 
-#### 用diffconfig脚本来比较默认.config和menuconfig之后的.config,导出差异文件seed.config，给云编译备用
-
-	./scripts/diffconfig.sh > seed.config
-
-#### .config文件笔记(在Ubuntu Desktop下是隐藏文件)
-	make defconfig
-	# 1. 如果没有.config文件，生成默认配置的.config文件
-	# 2. 如果有.config文件，检测是否有缺少的配置，有缺少则按照默认的y/n添加上去;没有则使用当前.config文件，不会被改动成默认配置
-
-	make menuconfig
-	# 1. 通过菜单选择来生成.config文件
-
-- make前必须要有.config文件
-- 如果没有新增编译项目，可以直接使用上次的.config，用`make defconfig`确认是否是 `# No change to .config`
-- 或使用diffconfig.sh导出的差异配置seed.config，改名成.config，然后用`make defconfig`生成完整版的.config，再make
-
 #### 默认luci-app-ddns插件里的dnspod和aliyun如何正确使用
 - 域名的正确填写方法
 	- 如果是`example.com`，则域名填：`@example.com`
 	- 如果是`blog.example.com`，则域名填：`blog@example.com`
 	- 如果是`good.blog.example.com`，则域名填：`good.blog@example.com`
-
-#### openwrt源修改，注意要和linux core的版本对应
-	src/gz openwrt_core https://mirrors.cloud.tencent.com/lede/releases/21.02.0/targets/x86/64/packages
-	src/gz openwrt_base https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/base
-	src/gz openwrt_luci https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/luci
-	src/gz openwrt_packages https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/packages
-	src/gz openwrt_routing https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/routing
-	src/gz openwrt_telephony https://mirrors.cloud.tencent.com/lede/releases/21.02.0/packages/x86_64/telephony
-
-第三方编译固件，和官方签名不一致，无法opkg update成功，可把这行用#注释掉`# option check_signature`
