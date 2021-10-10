@@ -172,7 +172,7 @@ make -j$(($(nproc) + 1)) V=s
 
 ## 2.重新配置config的编译方法：
 
-#### 重新配置config编译
+### 重新配置config编译
 ```
 cd lede
 rm -rf ./tmp && rm -rf .config
@@ -180,7 +180,7 @@ make menuconfig
 make -j$(($(nproc) + 1)) V=s
 ```
 
-#### 更新Lean master源码+feeds+openclash & 重新配置config编译
+### 更新Lean master源码+feeds+openclash & 重新配置config编译
 ```
 cd lede
 git pull                                                   #同步更新lean master源码，编译指定commit版本可跳过此步
@@ -194,14 +194,14 @@ make -j$(($(nproc) + 1)) V=s
 
 # 附3：安装
 
-#### PVE安装指令
+### PVE安装指令
    1. local(***)-->ISO镜像-->上传
    ```
    qm importdisk 100 /var/lib/vz/template/iso/openwrt-x86-64-generic-squashfs-combined-efi.img local-lvm
    ```
 `100`为虚拟机ID，请自行修改
 
-#### openwrt源修改，注意要和版本对应
+### openwrt源修改，注意要和版本对应
 登录web，系统 > 软件包 > 设置，修改：
 ```
 src/gz openwrt_core https://mirrors.cloud.tencent.com/lede/releases/21.02.0/targets/x86/64/packages
@@ -213,7 +213,7 @@ src/gz openwrt_telephony https://mirrors.cloud.tencent.com/lede/releases/21.02.0
 ```
 因为是自编译固件，和官方签名不一致，无法opkg update成功，要把这行用#注释掉`# option check_signature`
 
-#### OpenWrt /LEDE 中安装QEMU Guest Agent
+### OpenWrt /LEDE 中安装QEMU Guest Agent
 
 1. ssh进openwrt，安装qemu-ga
 	```
@@ -224,11 +224,11 @@ src/gz openwrt_telephony https://mirrors.cloud.tencent.com/lede/releases/21.02.0
 
 # 附4：其他
 
-#### 用`diffconfig.sh`脚本导出[默认的`.config`]和[menuconfig之后的`.config`]之间的差异文件`seed.config`，给云编译备用
+### 用`diffconfig.sh`脚本导出[默认的`.config`]和[menuconfig之后的`.config`]之间的差异文件`seed.config`，给云编译备用
 
 	./scripts/diffconfig.sh > seed.config
 
-#### `.config`文件笔记(在Ubuntu Desktop下是隐藏文件)
+### `.config`文件笔记(在Ubuntu Desktop下是隐藏文件)
 	make defconfig
 	# 1. 如果没有.config文件，生成默认配置的.config文件
 	# 2. 如果有.config文件，检测是否有缺少的配置，有缺少则按照默认的y/n添加上去;没有则使用当前.config文件，不会被改动成默认配置
@@ -240,7 +240,7 @@ src/gz openwrt_telephony https://mirrors.cloud.tencent.com/lede/releases/21.02.0
 - 如果没有新增编译项目，可以直接使用上次的`.config`，用`make defconfig`确认是否是 `# No change to .config`
 - 或使用`diffconfig.sh`导出的差异配置`seed.config`，改名成`.config`，然后用`make defconfig`生成完整版的`.config`，再make
 
-#### 单独编译 OpenWRT ipk 插件
+### 单独编译 OpenWRT ipk 插件
 
 1. 保存插件源码
 	- 下载源码`git clone`到~`/lede/package`
@@ -261,7 +261,7 @@ src/gz openwrt_telephony https://mirrors.cloud.tencent.com/lede/releases/21.02.0
 5. 其他
 	- 若无法编译出插件，手动删除`bin`,`feeds`,`package/feeds`这些文件夹，再`./scripts/feeds update -a && ./scripts/feeds install -a`下
 
-#### 默认luci-app-ddns插件里的dnspod和aliyun如何正确使用
+### 默认luci-app-ddns插件里的dnspod和aliyun如何正确使用
 - 域名的正确填写方法
 	- 如果是`example.com`，则域名填：`@example.com`
 	- 如果是`blog.example.com`，则域名填：`blog@example.com`
