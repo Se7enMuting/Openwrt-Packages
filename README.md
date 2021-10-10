@@ -199,7 +199,7 @@ make -j$(($(nproc) + 1)) V=s
    ```
    qm importdisk 100 /var/lib/vz/template/iso/openwrt-x86-64-generic-squashfs-combined-efi.img local-lvm
    ```
-	 `100`为虚拟机ID，请自行修改
+`100`为虚拟机ID，请自行修改
 
 #### openwrt源修改，注意要和版本对应
 登录web，系统 > 软件包 > 设置，修改：
