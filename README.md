@@ -44,7 +44,7 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 
 3. 使用 `git clone https://github.com/coolsnowwolf/lede.git` 命令下载好源代码，然后 `cd lede` 进入目录
 
-4. `git reset --hard 687407acdc585355acd24726eac61dca60cd06fb`  退回R21.10.1版本
+4. `git reset --hard 687407acdc585355acd24726eac61dca60cd06fb`  退回R21.10.1版本；如果想用最新的master版本，请跳过次步
 
 5. 更改LAN口的默认IP地址
 	```
@@ -159,10 +159,10 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 
 4. 编译完成后输出路径：bin/targets
 
-#### 以后更新编译（更新Lean源码+package+openclash）
+#### 以后更新编译（更新Lean master源码+feeds+openclash）
 ```
 cd lede                                                       #进入LEDE目录
-git pull                                                      #同步更新大雕源码
+git pull                                                      #同步更新lean master源码，编译指定commit版本可跳过此步
 cd package/luci-app-openclash && git pull                     #进入OpenClash目录并更新源码
 cd ../..                                                      #退回到lede目录
 ./scripts/feeds update -a && ./scripts/feeds install -a -f
@@ -180,10 +180,10 @@ make menuconfig
 make -j$(($(nproc) + 1)) V=s
 ```
 
-#### 更新Lean源码+package+openclash & 重新配置config编译
+#### 更新Lean master源码+feeds+openclash & 重新配置config编译
 ```
 cd lede
-git pull
+git pull                                                   #同步更新lean master源码，编译指定commit版本可跳过此步
 cd package/luci-app-openclash && git pull
 cd ../..
 ./scripts/feeds update -a && ./scripts/feeds install -a -f
