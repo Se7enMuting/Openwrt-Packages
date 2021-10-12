@@ -55,7 +55,7 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 	:wq                                               #保存退出
 	```
 
-6. 添加下面代码到lede源码根目录`feeds.conf.default`文件（添加passwall和自定义的feeds源）
+6. 添加下面代码到根目录下`feeds.conf.default`文件内（添加passwall和自定义的feeds源）
 	```
 	src-git lienol https://github.com/xiaorouji/openwrt-passwall
 	src-git Se7en https://github.com/Se7enMuting/openwrt-packages
