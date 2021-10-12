@@ -212,13 +212,6 @@ src/gz openwrt_telephony https://mirrors.cloud.tencent.com/lede/releases/21.02.0
 
 ### OpenWrt /LEDE 中安装QEMU Guest Agent
 
-1. ssh进openwrt，安装qemu-ga
-	```
-	opkg update
-	opkg install qemu-ga
-	reboot
-	```
-
 # 附4：其他
 
 ### 用`diffconfig.sh`脚本导出[默认的`.config`]和[menuconfig之后的`.config`]之间的差异文件`seed.config`，给云编译备用
