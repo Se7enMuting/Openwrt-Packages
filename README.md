@@ -210,8 +210,6 @@ src/gz openwrt_telephony https://mirrors.cloud.tencent.com/lede/releases/21.02.0
 ```
 因为是自编译固件，和官方签名不一致，无法opkg update成功，要把这行用#注释掉`# option check_signature`
 
-### OpenWrt /LEDE 中安装QEMU Guest Agent
-
 # 附4：其他
 
 ### 用`diffconfig.sh`脚本导出[默认的`.config`]和[menuconfig之后的`.config`]之间的差异文件`seed.config`，给云编译备用
