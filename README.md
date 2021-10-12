@@ -82,35 +82,30 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 	cd ../..
 	```
 
-8. 添加host/upx依赖，passwall要用，也可以不装，只是会有个warning而已
-	```
-	git clone https://github.com/kuoruan/openwrt-upx.git package/openwrt-upx
-	```
-
-9. 删除lean原包中的luci-app-wrtbwmon和luci-app-netdata，避免warning
+8. 删除lean原包中的luci-app-wrtbwmon和luci-app-netdata，避免warning
 	```
 	rm -rf package/lean/luci-app-wrtbwmon/
 	rm -rf package/lean/luci-app-netdata/
 	```
 
-10. update feeds
+9. update feeds
 	```
 	./scripts/feeds update -a
 	```
 
-11. 强制安装（-f）feeds，如feeds和lean源有同名的package，强制安装feed里的
+10. 强制安装（-f）feeds，如feeds和lean源有同名的package，强制安装feed里的
 	```
 	./scripts/feeds install -a -f
 	```
 
-12. 添加poweroff按钮，这步必须要在feeds install之后，编译之前
+11. 添加poweroff按钮，这步必须要在feeds install之后，编译之前
 	```
 	cd lean #进入源码目录
 	curl -fsSL https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/poweroff.htm > ./feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_system/poweroff.htm
 	curl -fsSL https://raw.githubusercontent.com/sirpdboy/other/master/patch/poweroff/system.lua > ./feeds/luci/modules/luci-mod-admin-full/luasrc/controller/admin/system.lua
 	```
 
-13. 进入交互式配置界面
+12. 进入交互式配置界面
 
 		make menuconfig
 
@@ -135,11 +130,11 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
    	- Kernel modules > Network Support >+ kmod-tun
 
 
-14. `make -j8 download V=s` 下载dl库（国内请尽量全局科学上网）
+13. `make -j8 download V=s` 下载dl库（国内请尽量全局科学上网）
 
-15. 输入 `make -j1 V=s` （-j1 后面是线程数；第一次编译推荐用单线程）即可开始编译你要的固件了
+14. 输入 `make -j1 V=s` （-j1 后面是线程数；第一次编译推荐用单线程）即可开始编译你要的固件了
 
-16. 编译完成后输出路径：bin/targets
+15. 编译完成后输出路径：bin/targets
 
 #### 第二次完整编译，带上openclash和passwall
 1. 清除配置
@@ -147,7 +142,7 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 	rm -rf ./tmp && rm -rf .config
 	```
 
-2. 重复**首次编译**中的第13步，LuCI > Applications里选[22个](https://github.com/Se7enMuting/Actions-OpenWrt/blob/main/2021-10-06-R21_10_1.config)（+openclash和passwall）
+2. 重复**首次编译**中的第12步，LuCI > Applications里选[22个](https://github.com/Se7enMuting/Actions-OpenWrt/blob/main/2021-10-06-R21_10_1.config)（+openclash和passwall）
 	```
 	make menuconfig
 	```
