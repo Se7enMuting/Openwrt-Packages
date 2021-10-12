@@ -120,6 +120,7 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
    	*（默认是 16，建议修改成 64）*
 	   - Target Images > (160) Root filesystem partition size (in MB)
    	*（默认是 160，建议修改成 512+）*
+	- Target Images >+ QCOW2 IMAGES - VMDK IMAGES ---> 改生成QCOW2，PVE用，可跳过
 	- Base system >+ dnsmasq-full ---> 选满（HAVE不选）
 	- LuCI > Modules >+ Luci-compat ---> OpenClash依赖
 	- Network > IP Addresses and Names >+ ddns-scripts_cloudflare.com-v4 + ddns-scripts_freedns_42_pl + ddns-scripts_godaddy.com-v1 ---> DDNS插件依赖
