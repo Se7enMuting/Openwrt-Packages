@@ -214,6 +214,7 @@ src/gz openwrt_telephony https://mirrors.cloud.tencent.com/lede/releases/21.02.0
 
 ### 用`diffconfig.sh`脚本导出[默认的`.config`]和[menuconfig之后的`.config`]之间的差异文件`seed.config`，给云编译备用
 
+	make defconfig                             #新clone首次menuconfig之后需执行一次
 	./scripts/diffconfig.sh > seed.config
 
 ### `.config`文件笔记(在Ubuntu Desktop下是隐藏文件)
