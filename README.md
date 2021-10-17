@@ -126,6 +126,7 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 	- LuCI > Modules >+ Luci-compat ---> OpenClash依赖
 	- Network > IP Addresses and Names >+ ddns-scripts_cloudflare.com-v4 + ddns-scripts_freedns_42_pl + ddns-scripts_godaddy.com-v1 ---> DDNS插件依赖
 	- Network >+ iperf3 ---> luci-app-netspeedtest需要
+	- Network > WirlessAPD >- wpad - hostapd-common ---> 取消Wirless选项，避免报错
 	- 添加主题 >+ opentopd
 	- LuCI > Applications 先选[20个（22-2）](https://github.com/Se7enMuting/Actions-OpenWrt/blob/main/2021-10-06-R21_10_1.config)，因为首次编译，建议openclash和passwall先不选；如果全选，且编译通过，那下面的第二次编译就不需要了
 	- 最后再确认kmod-tun被选上了（openclash依赖，一定要最后确认一次，因为会被自动取消掉）
