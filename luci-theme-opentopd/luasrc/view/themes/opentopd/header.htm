@@ -44,7 +44,7 @@
 
 	local c = tree
 	local i, r
-	
+
 	function glob(...)
 		local iter, code, msg = fs.glob(...)
 		if iter then
@@ -53,7 +53,7 @@
 			return nil, code, msg
 		end
 	end
-	
+
 	-- tag all nodes leading to this page
 	for i, r in ipairs(request) do
 		if c.nodes and c.nodes[r] then
@@ -195,7 +195,7 @@
 		bgcount = bgcount + 1
 	end
 
-if ODAY > NDAY then 
+if false then
 luci.sys.exec("(curl -k -L \"$(curl -s https://instant.unsplash.com | grep -oE '\"raw\":\".*?\",\"full\"'| grep -o 'https://.*,' | sed 's/\",//g')\&q=80\&w=1680\" -o /www/luci-static/opentopd/img/1.jpg >/dev/null 2>&1) &")
 luci.sys.exec("(curl -k -L \"$(curl -s https://instant.unsplash.com | grep -oE '\"raw\":\".*?\",\"full\"'| grep -o 'https://.*,' | sed 's/\",//g')\&q=80\&w=1680\" -o /www/luci-static/opentopd/img/2.jpg >/dev/null 2>&1) &")
 luci.sys.exec("(curl -k -L \"$(curl -s https://instant.unsplash.com | grep -oE '\"raw\":\".*?\",\"full\"'| grep -o 'https://.*,' | sed 's/\",//g')\&q=80\&w=1680\" -o /www/luci-static/opentopd/img/3.jpg >/dev/null 2>&1) &")
@@ -227,7 +227,7 @@ end
         <link rel="apple-touch-icon-precomposed" href="<%=media%>/logo.png" sizes="144x144">
 	<link rel="stylesheet" href="<%=media%>/css/style.css?v=<%=math.random(1,100000)%>">
 	<link rel="stylesheet" href="<%=media%>/css/pure-min.css?v=<%=math.random(1,100000)%>">
-	<link rel="shortcut icon" href="<%=media%>/favicon.ico"> 
+	<link rel="shortcut icon" href="<%=media%>/favicon.ico">
 	<% if node and node.css then %>
 		<link rel="stylesheet" href="<%=resource%>/<%=node.css%>">
 	<% end -%>
@@ -251,7 +251,7 @@ end
     </div>
     <div class="main-left">
         <div class="sidenav-header d-flex align-items-center">
-            <a class="brand" href="#"><%=boardinfo.hostname or "?"%></a> 
+            <a class="brand" href="#"><%=boardinfo.hostname or "?"%></a>
             <div class="ml-auto">
                 <!-- Sidenav toggler -->
                 <div class="sidenav-toggler d-none d-xl-block active" data-action="sidenav-unpin" data-target="#sidenav-main">
