@@ -1,29 +1,19 @@
 
 ## 本package包来自：
 ```
-https://github.com/kenzok8/openwrt-packages
 https://github.com/sirpdboy/sirpdboy-package
-https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 ```
 
 ## 本package包说明：
-1. 来自kenzok8：
-	- luci-theme-atmaterial_new  -----------主题
-	- luci-theme-argon_new     -------------主题
-2. 来自sirpdboy(koolshare风格)：
+1. 来自sirpdboy(koolshare风格)：
 	- luci-app-advanced---------------------系统高级设置【自带文件管理功能】（自改添加passwall支持）
-	- luci-app-aliddns----------------------阿里DDNS
 	- luci-app-control-speedlimit-----------网速限制
 	- luci-app-control-timewol--------------定时唤醒
 	- luci-app-control-weburl---------------管控过滤[集成上网时间控制，黑白名单IP过滤，网址过滤几大功能]
-	- luci-app-netdata----------------------网络监控中文版
 	- luci-app-netspeedtest-----------------网络速度测试（需要network >+ iperf3）
 	- luci-app-wolplus----------------------网络唤醒+（需要配合control-weburl一起用）
-	- luci-app-wrtbwmon---------------------带宽监控
 	- luci-theme-opentopd-------------------主题(koolshare风格，适配Lean)
 	- 关机功能插件，curl修改方法 : https://github.com/sirpdboy/luci-app-poweroffdevice
-3. 腾讯官方:
-	- luci-app-tencentddns------------------ 腾讯DDNS（修改UI，移入`服务`中）
 
 ----
 # 附1：[自用云编译Action](https://github.com/Se7enMuting/Actions-OpenWrt)
@@ -55,10 +45,9 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 	:wq                                               #保存退出
 	```
 
-6. 添加下面代码到根目录下`feeds.conf.default`文件内（添加passwall和自定义的feeds源）
+6. 添加下面代码到根目录下`feeds.conf.default`文件内（添加passwall的feeds源）
 	```
 	src-git lienol https://github.com/xiaorouji/openwrt-passwall
-	src-git Se7en https://github.com/Se7enMuting/openwrt-packages
 	```
 
 7. 添加openclash源
@@ -82,10 +71,10 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 	cd ../..
 	```
 
-8. 删除lean原包中的luci-app-wrtbwmon和luci-app-netdata，避免warning
+8. 添加其他主题和插件（不需要可跳过）
 	```
-	rm -rf package/lean/luci-app-wrtbwmon/
-	rm -rf package/lean/luci-app-netdata/
+	git clone https://github.com/sirpdboy/luci-theme-opentopd package/luci-theme-opentopd
+	git clone https://github.com/Se7enMuting/Openwrt-Packages package/Openwrt-Packages
 	```
 
 9. update feeds
@@ -93,7 +82,7 @@ https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns
 	./scripts/feeds update -a
 	```
 
-10. 强制安装（-f）feeds，如feeds和lean源有同名的package，强制安装feed里的
+10. 强制安装（-f）feeds，如feeds和lean源有同名的package，强制安装feeds里的
 	```
 	./scripts/feeds install -a -f
 	```
