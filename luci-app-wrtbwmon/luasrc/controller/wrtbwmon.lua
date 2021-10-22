@@ -4,16 +4,16 @@ function index()
 	if not nixio.fs.access("/etc/config/wrtbwmon") then
 		return
 	end
-	entry({"admin", "network", "usage"},
-		alias("admin", "network", "usage", "details"),
-		 _("Traffic Status"), 60)
-	entry({"admin", "network", "usage", "details"},
+	entry({"admin", "nlbw", "usage"},
+		alias("admin", "nlbw", "usage", "details"),
+		 _("Usage"), 1)
+	entry({"admin", "nlbw", "usage", "details"},
 		template("wrtbwmon"),
 		_("Details"), 10).leaf=true
-	entry({"admin", "network", "usage", "config"},
+	entry({"admin", "nlbw", "usage", "config"},
 		arcombine(cbi("wrtbwmon/config")),
 		_("Configuration"), 20).leaf=true
-	entry({"admin", "network", "usage", "custom"},
+	entry({"admin", "nlbw", "usage", "custom"},
 		form("wrtbwmon/custom"),
 		_("User file"), 30).leaf=true
 end

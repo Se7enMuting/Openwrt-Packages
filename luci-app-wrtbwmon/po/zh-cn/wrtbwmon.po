@@ -1,5 +1,5 @@
-msgid "Traffic Status"
-msgstr "流量监控"
+msgid "Usage"
+msgstr "流量"
 
 msgid "Usage - Configuration"
 msgstr "文件设置"
