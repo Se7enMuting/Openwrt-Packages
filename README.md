@@ -12,8 +12,9 @@ https://github.com/sirpdboy/sirpdboy-package
 	- luci-app-control-weburl---------------管控过滤[集成上网时间控制，黑白名单IP过滤，网址过滤几大功能]
 	- luci-app-netspeedtest-----------------网络速度测试（需要network >+ iperf3）
 	- luci-app-wolplus----------------------网络唤醒+（需要配合control-weburl一起用）
-	- luci-theme-opentopd-------------------主题(koolshare风格，适配Lean)
-	- 关机功能插件，curl修改方法 : https://github.com/sirpdboy/luci-app-poweroffdevice
+	- luci-app-wrtbwmon---------------------流量监控 1.6.3
+2. 关机功能
+	- curl修改方法 : https://github.com/sirpdboy/luci-app-poweroffdevice
 
 ----
 # 附1：[自用云编译Action](https://github.com/Se7enMuting/Actions-OpenWrt)
@@ -34,9 +35,9 @@ https://github.com/sirpdboy/sirpdboy-package
 
 3. 使用 `git clone https://github.com/coolsnowwolf/lede.git` 命令下载好源代码，然后 `cd lede` 进入目录
 
-4. `git reset --hard 687407acdc585355acd24726eac61dca60cd06fb`  退回R21.10.1版本；如果想用最新的master版本，请跳过次步
+4. `git reset --hard 687407acdc585355acd24726eac61dca60cd06fb`  退回R21.10.1版本；如果想用最新的master版本，请跳过此步
 
-5. 更改LAN口的默认IP地址
+5. 更改LAN口的默认IP地址（不需要可跳过）
 	```
 	cd lede
 	vim package/base-files/files/bin/config_generate
@@ -75,6 +76,10 @@ https://github.com/sirpdboy/sirpdboy-package
 	```
 	git clone https://github.com/sirpdboy/luci-theme-opentopd package/luci-theme-opentopd
 	git clone https://github.com/Se7enMuting/Openwrt-Packages package/Openwrt-Packages
+
+	cd lede/package/lean
+	rm -rf luci-theme-argon
+	git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
 	```
 
 9. update feeds
