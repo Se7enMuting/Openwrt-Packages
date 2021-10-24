@@ -112,20 +112,20 @@ https://github.com/sirpdboy/sirpdboy-package
 	   - 在 LuCI > Applications里，现在可以取消luci-app-samba了
 	- 编译丰富插件时，建议修改下面两项默认大小，留足插件空间
 	   - Target Images > (16) Kernel partition size (in MB)
-   	*（默认是 16，建议修改成 64）*
+	   *（默认是 16，建议修改成 64）*
 	   - Target Images > (160) Root filesystem partition size (in MB)
-   	*（默认是 160，建议修改成 512+）*
+	   *（默认是 160，建议修改成 512+）*
 	- Utilities > Virtualizatio > +qemu-ga ---> PVE虚拟机助手QEMU-Guest-Agent，非PVE用户不用选
 	- Target Images >+ QCOW2 IMAGES - VMDK IMAGES ---> VM改生成QCOW2镜像，PVE用，非PVE用户可跳过
 	- Base system >+ dnsmasq-full ---> 选满（HAVE不选）
 	- LuCI > Modules >+ Luci-compat ---> OpenClash依赖
 	- Network > IP Addresses and Names >+ ddns-scripts_cloudflare.com-v4 + ddns-scripts_freedns_42_pl + ddns-scripts_godaddy.com-v1 ---> DDNS插件依赖
 	- Network >+ iperf3 ---> luci-app-netspeedtest需要
-	- Network > WirlessAPD >- wpad - hostapd-common ---> 取消Wirless选项，避免报错
-	- 添加主题 >+ opentopd
+	- Network > WirlessAPD >- wpad - hostapd-common ---> 取消Wirless选项，避免报错，可跳过
+	- 添加主题 >+ opentopd +argon
 	- LuCI > Applications 先选[XX-2个](https://github.com/Se7enMuting/Actions-OpenWrt/blob/main/lean/.config)，因为首次编译，建议openclash和passwall先不选；如果全选，且编译通过，那下面的第二次编译就不需要了
 	- 最后再确认kmod-tun被选上了（openclash依赖，一定要最后确认一次，因为会被自动取消掉）
-   	- Kernel modules > Network Support >+ kmod-tun
+	   - Kernel modules > Network Support >+ kmod-tun
 
 
 13. `make -j8 download V=s` 下载dl库（国内请尽量全局科学上网）
