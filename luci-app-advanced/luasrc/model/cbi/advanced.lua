@@ -6,29 +6,27 @@ m.apply_on_parse=true
 s=m:section(TypedSection,"advanced")
 s.anonymous=true
 
-if nixio.fs.access("/bin/nuc")then
-	s:tab("mode",translate("模式切换(旁路由）"),translate("<br />可以在这里切换旁路由和正常模式，重置你的网络设置。<br /><font color=\"Red\"><strong>点击后会立即重启设备，没有确认过程，请谨慎操作！</strong></font><br/>"))
-	o=s:taboption("mode",Button,"nucmode",translate("切换为旁路由模式"),translate("<font color=\"green\"><strong>本模式适合于单口和多网口主机，自动将网口全桥接好！<br />默认gateway是：192.168.1.1，ipaddr是192.168.1.2。用本机接口LAN接上级LAN当旁路由，主路由关闭DHCP服务。</strong></font><br/>"))
-	o.inputtitle=translate("旁路由模式")
-	o.inputstyle="reload"
+-- if nixio.fs.access("/bin/nuc")then
+	-- s:tab("mode",translate("模式切换(旁路由）"),translate("<br />可以在这里切换旁路由和正常模式，重置你的网络设置。<br /><font color=\"Red\"><strong>点击后会立即重启设备，没有确认过程，请谨慎操作！</strong></font><br/>"))
+	-- o=s:taboption("mode",Button,"nucmode",translate("切换为旁路由模式"),translate("<font color=\"green\"><strong>本模式适合于单口和多网口主机，自动将网口全桥接好！<br />默认gateway是：192.168.1.1，ipaddr是192.168.1.2。用本机接口LAN接上级LAN当旁路由，主路由关闭DHCP服务。</strong></font><br/>"))
+	-- o.inputtitle=translate("旁路由模式")
+	-- o.inputstyle="reload"
 
-	o.write=function()
-	luci.sys.call("/bin/nuc")
-	end
+	-- o.write=function()
+	-- luci.sys.call("/bin/nuc")
+	-- end
 
-	o=s:taboption("mode",Button,"normalmode",translate("切换成正常模式"),translate("<font color=\"green\"><strong>本模式适合于有两个网口或以上的设备使用，如多网口软路由或者虚拟了两个以上网口的虚拟机使用！</strong></font><br/>"))
-	o.inputtitle=translate("正常模式")
-	o.inputstyle="reload"
+	-- o=s:taboption("mode",Button,"normalmode",translate("切换成正常模式"),translate("<font color=\"green\"><strong>本模式适合于有两个网口或以上的设备使用，如多网口软路由或者虚拟了两个以上网口的虚拟机使用！</strong></font><br/>"))
+	-- o.inputtitle=translate("正常模式")
+	-- o.inputstyle="reload"
 
-	o.write=function()
-	luci.sys.call("/bin/normalmode")
-	end
-end
+	-- o.write=function()
+	-- luci.sys.call("/bin/normalmode")
+	-- end
+-- end
 
 if nixio.fs.access("/etc/dnsmasq.conf")then
-
 s:tab("dnsmasqconf",translate("dnsmasq"),translate("本页是配置/etc/dnsmasq.conf的文档内容。应用保存后自动重启生效"))
-
 conf=s:taboption("dnsmasqconf",Value,"dnsmasqconf",nil,translate("开头的数字符号（＃）或分号的每一行（;）被视为注释；删除（;）启用指定选项。"))
 conf.template="cbi/tvalue"
 conf.rows=20
@@ -48,6 +46,7 @@ e.remove("/tmp/dnsmasq.conf")
 end
 end
 end
+
 if nixio.fs.access("/etc/config/network")then
 s:tab("netwrokconf",translate("网络"),translate("本页是配置/etc/config/network包含网络配置文档内容。应用保存后自动重启生效"))
 conf=s:taboption("netwrokconf",Value,"netwrokconf",nil,translate("开头的数字符号（＃）或分号的每一行（;）被视为注释；删除（;）启用指定选项。"))
@@ -69,9 +68,9 @@ e.remove("/tmp/network")
 end
 end
 end
+
 if nixio.fs.access("/etc/hosts")then
 s:tab("hostsconf",translate("hosts"),translate("本页是配置/etc/hosts的文档内容。应用保存后自动重启生效"))
-
 conf=s:taboption("hostsconf",Value,"hostsconf",nil,translate("开头的数字符号（＃）或分号的每一行（;）被视为注释；删除（;）启用指定选项。"))
 conf.template="cbi/tvalue"
 conf.rows=20
@@ -91,6 +90,7 @@ e.remove("/tmp/hosts.tmp")
 end
 end
 end
+
 if nixio.fs.access("/etc/config/arpbind")then
 s:tab("arpbindconf",translate("ARP绑定"),translate("本页是配置/etc/config/arpbind包含APR绑定MAC地址文档内容。应用保存后自动重启生效"))
 conf=s:taboption("arpbindconf",Value,"arpbindconf",nil,translate("开头的数字符号（＃）或分号的每一行（;）被视为注释；删除（;）启用指定选项。"))
@@ -112,6 +112,7 @@ e.remove("/tmp/arpbind")
 end
 end
 end
+
 if nixio.fs.access("/etc/config/firewall")then
 s:tab("firewallconf",translate("防火墙"),translate("本页是配置/etc/config/firewall包含防火墙协议设置文档内容。应用保存后自动重启生效"))
 conf=s:taboption("firewallconf",Value,"firewallconf",nil,translate("开头的数字符号（＃）或分号的每一行（;）被视为注释；删除（;）启用指定选项。"))
@@ -133,6 +134,7 @@ e.remove("/tmp/firewall")
 end
 end
 end
+
 if nixio.fs.access("/etc/config/mwan3")then
 s:tab("mwan3conf",translate("负载均衡"),translate("本页是配置/etc/config/mwan3包含负载均衡设置文档内容。应用保存后自动重启生效"))
 conf=s:taboption("mwan3conf",Value,"mwan3conf",nil,translate("开头的数字符号（＃）或分号的每一行（;）被视为注释；删除（;）启用指定选项。"))
@@ -154,6 +156,7 @@ e.remove("/tmp/mwan3")
 end
 end
 end
+
 if nixio.fs.access("/etc/config/dhcp")then
 s:tab("dhcpconf",translate("DHCP"),translate("本页是配置/etc/config/DHCP包含机器名等设置文档内容。应用保存后自动重启生效"))
 conf=s:taboption("dhcpconf",Value,"dhcpconf",nil,translate("开头的数字符号（＃）或分号的每一行（;）被视为注释；删除（;）启用指定选项。"))
@@ -175,6 +178,7 @@ e.remove("/tmp/dhcp")
 end
 end
 end
+
 if nixio.fs.access("/etc/config/ddns")then
 s:tab("ddnsconf",translate("DDNS"),translate("本页是配置/etc/config/ddns包含动态域名设置文档内容。应用保存后自动重启生效"))
 conf=s:taboption("ddnsconf",Value,"ddnsconf",nil,translate("开头的数字符号（＃）或分号的每一行（;）被视为注释；删除（;）启用指定选项。"))
@@ -218,6 +222,7 @@ e.remove("/tmp/timecontrol")
 end
 end
 end
+
 if nixio.fs.access("/etc/config/rebootschedule")then
 s:tab("rebootscheduleconf",translate("定时设置"),translate("本页是配置/etc/config/rebootschedule包含定时设置任务配置文档内容。应用保存后自动重启生效"))
 conf=s:taboption("rebootscheduleconf",Value,"rebootscheduleconf",nil,translate("开头的数字符号（＃）或分号的每一行（;）被视为注释；删除（;）启用指定选项。"))
@@ -239,6 +244,7 @@ e.remove("/tmp/rebootschedule")
 end
 end
 end
+
 if nixio.fs.access("/etc/config/wolplus")then
 s:tab("wolplusconf",translate("网络唤醒"),translate("本页是配置/etc/config/wolplus包含网络唤醒配置文档内容。应用保存后自动重启生效"))
 conf=s:taboption("wolplusconf",Value,"wolplusconf",nil,translate("开头的数字符号（＃）或分号的每一行（;）被视为注释；删除（;）启用指定选项。"))
@@ -282,6 +288,7 @@ e.remove("/tmp/smartdns")
 end
 end
 end
+
 if nixio.fs.access("/etc/config/openclash")then
 s:tab("openclashconf",translate("openclash"),translate("本页是配置/etc/config/openclash的文档内容。应用保存后自动重启生效"))
 conf=s:taboption("openclashconf",Value,"openclashconf",nil,translate("开头的数字符号（＃）或分号的每一行（;）被视为注释；删除（;）启用指定选项。"))
@@ -303,6 +310,7 @@ e.remove("/tmp/openclash")
 end
 end
 end
+
 if nixio.fs.access("/etc/config/passwall")then
 s:tab("passwallconf",translate("passwall"),translate("本页是配置/etc/config/passwall的文档内容。应用保存后自动重启生效"))
 conf=s:taboption("passwallconf",Value,"passwallconf",nil,translate("开头的数字符号（＃）或分号的每一行（;）被视为注释；删除（;）启用指定选项。"))
