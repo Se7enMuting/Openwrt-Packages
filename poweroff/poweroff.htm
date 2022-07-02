@@ -1,0 +1,59 @@
+<%#
+ Copyright 2008 Steven Barth <steven@midlink.org>
+ Copyright 2008-2015 Jo-Philipp Wich <jow@openwrt.org>
+ Licensed to the public under the Apache License 2.0.
+-%>
+
+<%+header%>
+
+<h2 name="content">关机</h2>
+<br />
+
+<p>关闭您正在使用设备的电源</p>
+
+
+<p class="alert-message warning">警告：对于不支持关机的设备，关机可能会导致重新启动.</p>
+
+
+<hr />
+
+<script type="text/javascript">//<![CDATA[
+	var tries = 0;
+
+	function ok() {
+		window.location = '<%=controller%>/admin';
+	}
+
+	function check() {
+		if (tries++ < 12)
+			window.setTimeout(ping, 5000);
+		else
+			alert('<%:Device unreachable%>');
+	}
+
+	function ping() {
+		var img = document.createElement('img');
+
+		img.onload = ok;
+		img.onerror = check;
+		img.src = '<%=resource%>/icons/loading.gif?' + Math.random();
+
+		document.getElementById('reboot-message').innerHTML = '设备关机完成';
+	}
+
+	function reboot(button) {
+		button.style.display = 'none';
+		document.getElementById('reboot-message').parentNode.style.display = '';
+
+		(new XHR()).post('<%=controller%>/admin/system/poweroff/call', { token: '<%=token%>' }, check);
+	}
+//]]></script>
+
+<input class="cbi-button cbi-button-apply" type="button" value="执行关机" onclick="reboot(this)" />
+
+<p class="alert-message" style="display:none">
+	<img src="<%=resource%>/icons/loading.gif" alt="<%:Loading%>" style="vertical-align:middle" />
+	<span id="reboot-message">正在关机...</span>
+</p>
+
+<%+footer%>
