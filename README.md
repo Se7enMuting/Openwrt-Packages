@@ -210,13 +210,13 @@ src/gz openwrt_telephony https://mirrors.cloud.tencent.com/lede/releases/21.02.0
 
 ### 用`diffconfig.sh`脚本导出[默认的`.config`]和[menuconfig之后的`.config`]之间的差异文件`seed.config`，给云编译备用
 
-	make defconfig                             #新clone首次menuconfig之后需执行一次
+	make defconfig                             #新clone首次menuconfig之前需执行一次
 	./scripts/diffconfig.sh > seed.config
 
 ### `.config`文件笔记(在Ubuntu Desktop下是隐藏文件)
 	make defconfig
 	# 1. 如果没有.config文件，生成默认配置的.config文件
-	# 2. 如果有.config文件，检测是否有缺少的配置，有缺少则按照默认的y/n添加上去;没有则使用当前.config文件，不会被改动成默认配置
+	# 2. 如果有.config文件，则保留这份.config文件中的所有配置，缺少的（如果有缺少）则用默认配置中的其余内容补全进去（github action 中的 .yml 脚本就是用这种方式运行的：make defconfig，所以上传的 .config 是差异文件）
 
 	make menuconfig
 	# 1. 通过菜单选择来生成.config文件
@@ -224,6 +224,26 @@ src/gz openwrt_telephony https://mirrors.cloud.tencent.com/lede/releases/21.02.0
 - make前必须要有`.config`文件
 - 如果没有新增编译项目，可以直接使用上次的`.config`，用`make defconfig`确认是否是 `# No change to .config`
 - 或使用`diffconfig.sh`导出的差异配置`seed.config`，改名成`.config`，然后用`make defconfig`生成完整版的`.config`，再make
+
+### 如何快速获取完整版的默认`.config`文件
+```
+git clone -b openwrt-18.06 https://github.com/immortalwrt/immortalwrt.git --depth 1
+#或者
+git clone -b openwrt-21.02 https://github.com/immortalwrt/immortalwrt.git --depth 1
+
+#CD 进入 immortalwrt 文件夹
+
+#以下可以额外的 package 可以省略
+git clone https://github.com/Se7enMuting/Openwrt-Packages package/Openwrt-Packages --depth 1
+git clone https://github.com/sirpdboy/luci-theme-opentopd package/luci-theme-opentopd --depth 1
+git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon --depth 1
+git clone -b 18.06 https://github.com/kiddin9/luci-theme-edge package/luci-theme-edge --depth 1
+
+./scripts/feeds update -a
+./scripts/feeds install -a
+
+make defconfig
+```
 
 ### 单独编译 OpenWRT ipk 插件
 
