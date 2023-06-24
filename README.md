@@ -225,7 +225,7 @@ src/gz openwrt_telephony https://mirrors.cloud.tencent.com/lede/releases/21.02.0
 - 如果没有新增编译项目，可以直接使用上次的`.config`，用`make defconfig`确认是否是 `# No change to .config`
 - 或使用`diffconfig.sh`导出的差异配置`seed.config`，改名成`.config`，然后用`make defconfig`生成完整版的`.config`，再make
 
-### 如何快速获取完整版的默认`.config`文件
+### 如何快速获取完整版的默认`.config`文件，用于搜索查找
 ```
 git clone -b openwrt-18.06 https://github.com/immortalwrt/immortalwrt.git --depth 1
 #或者
@@ -233,7 +233,7 @@ git clone -b openwrt-21.02 https://github.com/immortalwrt/immortalwrt.git --dept
 
 #CD 进入 immortalwrt 文件夹
 
-#以下可以额外的 package 可以省略
+#以下额外的 package 可以省略
 git clone https://github.com/Se7enMuting/Openwrt-Packages package/Openwrt-Packages --depth 1
 git clone https://github.com/sirpdboy/luci-theme-opentopd package/luci-theme-opentopd --depth 1
 git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon --depth 1
