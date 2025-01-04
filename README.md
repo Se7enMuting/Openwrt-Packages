@@ -267,7 +267,7 @@ make defconfig
 	- 若无法编译出插件，手动删除`bin`,`feeds`,`package/feeds`这些文件夹，再`./scripts/feeds update -a && ./scripts/feeds install -a`下
 
 ### 默认luci-app-ddns插件里的dnspod和aliyun如何正确使用
-- 域名的正确填写方法
-	- 如果是`example.com`，则域名填：`@example.com`
-	- 如果是`blog.example.com`，则域名填：`blog@example.com`
-	- 如果是`good.blog.example.com`，则域名填：`good.blog@example.com`
+- [域名]的正确填写方法(这里[域名]指[DDNS 服务提供商 [IPv4/6]下面的那行])
+	- [查询主机名]填：`example.com`，则[域名]：`@example.com`
+	- [查询主机名]填：`blog.example.com`，则[域名]：`blog@example.com`
+	- [查询主机名]填：`good.blog.example.com`，则[域名]：`good.blog@example.com`
